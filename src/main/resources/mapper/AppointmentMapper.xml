@@ -5,9 +5,106 @@
 <mapper namespace="com.flexreserve.appointment.mapper.AppointmentMapper">
 
 
-    <select id="selectByUserId" resultType="com.flexreserve.appointment.entity.Appointment">
-        SELECT * FROM biz_appointment
-        WHERE user_id = #{userId}
-        ORDER BY appointment_time DESC
+    <insert id="addResource" parameterType="com.flexreserve.appointment.entity.dto.ResourceDTO" useGeneratedKeys="true" keyProperty="id">
+        insert into booking_resource (name, type, capacity, location, status)
+        values (#{name}, #{type}, #{capacity}, #{location},  #{status})
+    </insert>
+    <insert id="addResourceConfig">
+        insert into booking_config (resource_id, start_time, end_time, slot_duration, max_booking_per_slot, advance_days, cancel_limit_minutes)
+        values (#{resourceId}, #{startTime}, #{endTime}, #{slotDuration}, #{maxBookingPerSlot}, #{advanceDays}, #{cancelLimitMinutes})
+    </insert>
+    <update id="updateResource" parameterType="com.flexreserve.appointment.entity.dto.ResourceDTO">
+        update booking_resource
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="capacity != null">
+                capacity = #{capacity},
+            </if>
+            <if test="location != null">
+                location = #{location},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateResourceConfig" parameterType="com.flexreserve.appointment.entity.dto.ConfigDTO">
+
+        update booking_config
+        <set>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+            <if test="slotDuration != null">
+                slot_duration = #{slotDuration},
+            </if>
+            <if test="maxBookingPerSlot != null">
+                max_booking_per_slot = #{maxBookingPerSlot},
+            </if>
+            <if test="advanceDays != null">
+                advance_days = #{advanceDays},
+            </if>
+            <if test="cancelLimitMinutes != null">
+                cancel_limit_minutes = #{cancelLimitMinutes},
+            </if>
+        </set>
+        where resource_id = #{resourceId}
+    </update>
+    <update id="updateResourceStatus">
+        update booking_resource
+        set status = #{status}
+        where id = #{resourceId}
+    </update>
+    <update id="updateResourceIsDelete">
+        update booking_resource set is_deleted = 1
+        where id = #{resourceId}
+    </update>
+    <select id="getResourceById" resultType="com.flexreserve.appointment.entity.dto.ResourceDTO">
+        select * from booking_resource where id = #{resourceId}
+    </select>
+    <select id="getBookingResourceById" resultType="com.flexreserve.appointment.entity.dto.ResourceDTO">
+        select * from booking_resource where id = #{resourceId}
+    </select>
+    <select id="getResourcePageListTotal" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM booking_resource
+        WHERE is_deleted = 0
+        <if test="type != null and type != ''">
+            AND type = #{type}
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+    </select>
+    <select id="getResourcePageList" resultType="com.flexreserve.appointment.entity.dto.ResourceDTO">
+        SELECT
+        id,
+        name,
+        type,
+        description,
+        location,
+        capacity,
+        status,
+        create_time AS createTime,
+        update_time AS updateTime
+        FROM booking_resource
+        WHERE is_deleted = 0
+        <if test="type != null and type != ''">
+            AND type = #{type}
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{size}
     </select>
 </mapper>
