@@ -1,14 +1,18 @@
 package com.flexreserve.appointment.controller;
 
 import com.flexreserve.appointment.entity.Appointment;
+import com.flexreserve.appointment.entity.dto.OrderPageQueryDTO;
 import com.flexreserve.appointment.entity.dto.ResourceDTO;
 import com.flexreserve.appointment.entity.dto.ResourcePageQueryDTO;
 import com.flexreserve.appointment.entity.dto.ResourceStatusDTO;
+import com.flexreserve.appointment.entity.vo.OrderPageQueryVO;
 import com.flexreserve.appointment.entity.vo.Resource;
 import com.flexreserve.appointment.service.AppointmentService;
+import com.flexreserve.appointment.service.OrderService;
 import com.flexreserve.common.PageResult;
 import com.flexreserve.common.Result;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.StringToClassMapItem;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AdminAppointmentController {
     private final AppointmentService appointmentService;
+    private final OrderService orderService;
 
     /**
      * 添加资源
@@ -55,6 +60,14 @@ public class AdminAppointmentController {
     public Result<PageResult<ResourceDTO>> getResourcePageList( ResourcePageQueryDTO queryDTO){
         PageResult<ResourceDTO> pageResult = appointmentService.getResourcePageList(queryDTO);
         return Result.success(pageResult);
+    }
+
+
+    @Operation(summary = "获取预约订单分页列表")
+    @GetMapping("/orders")
+    public Result<PageResult<OrderPageQueryVO>> getOrderPageList( OrderPageQueryDTO queryDTO,  @RequestParam(required = false) Long resourceId){
+        return orderService.queryAdminOrders(queryDTO, resourceId);
+
     }
 
 

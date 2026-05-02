@@ -1,5 +1,6 @@
 package com.flexreserve.user.mapper;
 
+import com.flexreserve.user.entity.DTO.UserDTO;
 import com.flexreserve.user.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -15,4 +16,10 @@ public interface UserMapper {
         // 3. 根据手机号查询用户
         @Select("select * from sys_user where phone = #{phone}")
         User getUserByPhone(String phone);
+
+    UserDTO getUserById(Long userId);
+
+    Long getTenantByUserID(Long id);
+
+    String getTenantNameById(Long id);
 }

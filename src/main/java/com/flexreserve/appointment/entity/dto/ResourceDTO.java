@@ -39,4 +39,6 @@ public class ResourceDTO {
     @NotNull(message = "配置信息不能为空")
     @Schema(description = "资源配置")
     private ConfigDTO config;
+    private String tenantName;
+    private Long tenantId;
 }

@@ -6,17 +6,14 @@
 
 
     <select id="getResourceList" resultType="com.flexreserve.appointment.entity.vo.Resource">
-        SELECT
-            id,
-            name,
-            type,
-            capacity,
-            location,
-            equipment,
-            status
-        FROM biz_resource
-        WHERE status = 1
-          AND is_deleted = 0
-        ORDER BY create_time DESC 
+        SELECT r.id, r.name, r.type, r.description, r.location, r.capacity, r.status,
+        t.name AS tenant_name
+        FROM booking_resource r
+        LEFT JOIN sys_tenant t ON r.tenant_id = t.id
+        WHERE r.status = 1 AND r.is_deleted = 0
+        <if test="type != null and type != ''">
+            AND r.type = #{type}
+        </if>
+        ORDER BY r.create_time DESC
     </select>
 </mapper>

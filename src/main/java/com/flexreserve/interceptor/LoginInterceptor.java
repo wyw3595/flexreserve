@@ -12,9 +12,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
-@RequiredArgsConstructor
+
 public class LoginInterceptor implements HandlerInterceptor {
-    private final StringRedisTemplate redisTemplate;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 

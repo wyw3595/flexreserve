@@ -23,8 +23,13 @@ spring:
 server:
   port: 8081
 
-mybatis:
+# 将 mybatis 改为 mybatis-plus
+mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mapper/*.xml
+
+logging:
+  level:
+    com.flexreserve: debug

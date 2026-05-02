@@ -10,6 +10,7 @@ import com.flexreserve.user.entity.DTO.UserDTO;
 import com.flexreserve.user.entity.User;
 import com.flexreserve.user.mapper.UserMapper;
 import com.flexreserve.user.service.UserService;
+import com.flexreserve.utils.UserHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -101,6 +102,13 @@ public class UserServiceImpl implements UserService {
         // 4.UUID生成Token
         String token = UUID.fastUUID().toString(true);
         UserDTO userDTO = BeanUtil.copyProperties(user, UserDTO.class);
+        // 4.1判断是否是管理员
+        if (user.getRole()==1){
+            // 4.1是管理员查询器tenant
+           userDTO.setTenantId(userMapper.getTenantByUserID(userDTO.getId()));
+           userDTO.setTenantName(userMapper.getTenantNameById(userDTO.getTenantId()));
+        }
+
         String jsonStr = JSONUtil.toJsonStr(userDTO);
         String key = "login:token:" + token;
         redisTemplate.opsForValue().set(key,jsonStr, 30, TimeUnit.MINUTES);
@@ -109,5 +117,13 @@ public class UserServiceImpl implements UserService {
         redisTemplate.delete("code:" + phone);
 
         return Result.success(token);
+    }
+
+    @Override
+    public Result<UserDTO> getUserById() {
+        // 获取当前用户id
+        Long UserId = UserHolder.getUser().getId();
+        UserDTO userDTO = userMapper.getUserById(UserId);
+        return Result.success(userDTO);
     }
 }

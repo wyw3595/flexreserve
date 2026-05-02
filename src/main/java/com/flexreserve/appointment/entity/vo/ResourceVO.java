@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Resource {
+public class ResourceVO {
     // 资源ID
     private Long id;
 
@@ -31,16 +31,4 @@ public class Resource {
     // 状态（0-禁用，1-启用）
     private Integer status;
 
-    // 逻辑删除标识（0-未删除，1-已删除）
-    private Integer isDeleted;
-
-    // 审计字段 - 创建时间
-    private LocalDateTime createTime;
-
-    // 审计字段 - 更新时间
-    private LocalDateTime updateTime;
-    // 租户名称
-    private String tenantName;
-    // 租户ID
-    private Long tenantId;
 }

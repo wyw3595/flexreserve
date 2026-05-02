@@ -1,5 +1,6 @@
 package com.flexreserve.common;
 
+import com.flexreserve.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,5 +21,9 @@ public class GlobalExceptionHandler {
         // 注意：在真实的生产环境中，为了安全，我们通常不会把底层 e.getMessage() 直接抛给前端，
         // 而是返回类似 "系统繁忙，请稍后再试" 的统一文案。这里为了方便你调试，先返回真实报错。
         return Result.error(500, "系统开小差了：" + e.getMessage());
+    }
+    @ExceptionHandler(BusinessException.class)
+    public Result<String> handleBusinessException(BusinessException e) {
+        return Result.error(400, e.getMessage());
     }
 }

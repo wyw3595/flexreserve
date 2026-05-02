@@ -41,7 +41,21 @@ public class UserController {
     @Operation(summary = "获取验证码")
     public Result<String> getCode(String phone){
 
+        System.out.println(phone);
         return userService.getCode(phone);
     }
+    @GetMapping("/me")
+    @Operation(summary = "获取当前登录用户信息")
+    public Result<UserDTO> me()
+    {
+        return userService.getUserById();
+    }
+
+    @PostMapping("/register")
+    @Operation(summary = "用户注册")
+    public Result<String> register(UserDTO userDTO){
+        return userService.register(userDTO);
+    }
+
 
 }

@@ -11,4 +11,6 @@ public interface UserService {
     Result<String> getCode(String phone);
 
     Result<String> login(String phone , String code);
+
+    Result<UserDTO> getUserById();
 }

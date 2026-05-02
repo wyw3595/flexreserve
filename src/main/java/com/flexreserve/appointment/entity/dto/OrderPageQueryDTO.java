@@ -1,5 +1,3 @@
-
-
 package com.flexreserve.appointment.entity.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,24 +8,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "资源分页查询参数")
-public class ResourcePageQueryDTO {
-
+@Schema(description = "订单分页查询参数")
+public class OrderPageQueryDTO {
     @Schema(description = "页码", example = "1")
     private Integer page = 1;
 
     @Schema(description = "每页大小", example = "10")
     private Integer size = 10;
 
-    @Schema(description = "资源类型", example = "room")
-    private String type;
-
-    @Schema(description = "资源状态：0-停用，1-启用", example = "1")
+    @Schema(description = "订单状态：1-已确认，2-已完成，3-已取消", example = "1")
     private Integer status;
 
-    @Schema(description = "租户ID", example = "1")
-    private Long tenantId;
-
-    @Schema(hidden = true)
-    private Integer offset;
 }
